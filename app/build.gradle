@@ -62,8 +62,6 @@ dependencies {
     implementation libs.composeActivity
     implementation libs.composeMaterial
     implementation libs.composeTooling
-    implementation libs.accompanistSysUi
-    implementation libs.accompanistInsets
 
     testImplementation libs.junit
 

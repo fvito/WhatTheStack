@@ -7,7 +7,9 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
@@ -23,8 +25,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.accompanist.insets.navigationBarsHeight
-import com.google.accompanist.insets.statusBarsHeight
 import com.haroldadmin.whatthestack.R
 import com.haroldadmin.whatthestack.generateStackoverflowSearchUrl
 import com.haroldadmin.whatthestack.ui.components.OutlinedIconButton
@@ -46,13 +46,18 @@ internal fun ExceptionPage(
 
     val snackbarMessage = stringResource(id = R.string.copied_message)
 
-    Scaffold(scaffoldState = scaffoldState) {
+    Scaffold(
+        scaffoldState = scaffoldState,
+        modifier = Modifier
+            .statusBarsPadding()
+            .navigationBarsPadding()
+            .padding(horizontal = 4.dp)
+    ) {
         Column(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(it)
                 .verticalScroll(rememberScrollState())
         ) {
-            Spacer(modifier = Modifier.statusBarsHeight(additional = 8.dp))
             PageHeader()
             ExceptionDetails(
                 type = type,
@@ -102,7 +107,6 @@ internal fun ExceptionPage(
                 stackTrace = stackTrace,
                 modifier = Modifier.padding(top = 8.dp)
             )
-            Spacer(modifier = Modifier.navigationBarsHeight(additional = 8.dp))
         }
     }
 }
