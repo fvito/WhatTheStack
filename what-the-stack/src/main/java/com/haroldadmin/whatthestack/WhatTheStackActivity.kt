@@ -14,7 +14,7 @@ import com.haroldadmin.whatthestack.ui.theme.WhatTheStackTheme
  * An Activity which displays various pieces of information regarding the exception which
  * occurred.
  */
-class WhatTheStackActivity : AppCompatActivity() {
+internal class WhatTheStackActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

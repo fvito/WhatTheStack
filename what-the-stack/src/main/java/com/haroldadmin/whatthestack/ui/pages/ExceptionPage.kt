@@ -34,7 +34,7 @@ import com.haroldadmin.whatthestack.ui.theme.WhatTheStackTheme
 import kotlinx.coroutines.launch
 
 @Composable
-fun ExceptionPage(
+internal fun ExceptionPage(
     type: String,
     message: String,
     stackTrace: String
@@ -108,7 +108,7 @@ fun ExceptionPage(
 }
 
 @Composable
-fun PageHeader() {
+private fun PageHeader() {
     Text(
         stringResource(id = R.string.header_text),
         style = MaterialTheme.typography.h4,
@@ -123,7 +123,7 @@ fun PageHeader() {
 }
 
 @Composable
-fun ExceptionDetails(type: String, message: String, modifier: Modifier) {
+private fun ExceptionDetails(type: String, message: String, modifier: Modifier) {
     Column(modifier = modifier) {
         OverlineLabel(label = stringResource(id = R.string.exception_name))
         Text(
@@ -142,7 +142,7 @@ fun ExceptionDetails(type: String, message: String, modifier: Modifier) {
 }
 
 @Composable
-fun ExceptionOptions(
+private fun ExceptionOptions(
     onCopy: () -> Unit,
     onShare: () -> Unit,
     onRestart: () -> Unit,
@@ -181,7 +181,7 @@ fun ExceptionOptions(
 }
 
 @Composable
-fun Stacktrace(stackTrace: String, modifier: Modifier) {
+private fun Stacktrace(stackTrace: String, modifier: Modifier) {
     Column(modifier) {
         OverlineLabel(label = stringResource(id = R.string.stacktrace))
         Surface(modifier = Modifier.padding(top = 4.dp)) {
@@ -202,7 +202,7 @@ fun Stacktrace(stackTrace: String, modifier: Modifier) {
 
 @Preview
 @Composable
-fun ExceptionPagePreview() {
+private fun ExceptionPagePreview() {
     WhatTheStackTheme {
         ExceptionPage(
             type = SampleData.ExceptionType,
@@ -214,7 +214,7 @@ fun ExceptionPagePreview() {
 
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
-fun ExceptionPagePreviewNightMode() {
+private fun ExceptionPagePreviewNightMode() {
     WhatTheStackTheme {
         ExceptionPage(
             type = SampleData.ExceptionType,

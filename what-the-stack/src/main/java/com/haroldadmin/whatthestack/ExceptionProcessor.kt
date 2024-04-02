@@ -11,7 +11,7 @@ import kotlinx.parcelize.Parcelize
  * @param stacktrace The stacktrace of the exception represented as a string
  */
 @Parcelize
-data class ExceptionData(
+internal data class ExceptionData(
     val type: String,
     val cause: String,
     val message: String,

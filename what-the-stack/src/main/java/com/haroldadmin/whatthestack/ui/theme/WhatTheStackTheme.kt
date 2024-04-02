@@ -24,7 +24,7 @@ private val LightColorPalette = lightColors(
 internal val SystemBarsColor = Color(0x33373737)
 
 @Composable
-fun WhatTheStackTheme(
+internal fun WhatTheStackTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
