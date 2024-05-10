@@ -1,8 +1,10 @@
 package com.haroldadmin.whatthestack
 
+import android.content.Context
 import android.os.Message
-import android.os.Messenger
+import android.os.Parcel
 import androidx.core.os.bundleOf
+
 
 /**
  * A [Thread.UncaughtExceptionHandler] which is meant to be used as a default exception handler on
@@ -15,22 +17,43 @@ import androidx.core.os.bundleOf
  */
 @HostAppProcess
 internal class WhatTheStackExceptionHandler(
-    private val serviceMessenger: Messenger,
+    private val context: Context,
+    private val messengerHolder: MessengerHolder,
     private val defaultHandler: Thread.UncaughtExceptionHandler?,
 ) : Thread.UncaughtExceptionHandler {
     override fun uncaughtException(t: Thread, e: Throwable) {
         e.printStackTrace()
-        val exceptionData = e.process()
-        serviceMessenger.send(
-            Message().apply {
-                data = bundleOf(
-                    KEY_EXCEPTION_TYPE to exceptionData.type,
-                    KEY_EXCEPTION_CAUSE to exceptionData.cause,
-                    KEY_EXCEPTION_MESSAGE to exceptionData.message,
-                    KEY_EXCEPTION_STACKTRACE to exceptionData.stacktrace
-                )
+        val serviceMessenger = messengerHolder.serviceMessenger
+
+        val exceptionData = e.process().let {
+            bundleOf(
+                KEY_EXCEPTION_TYPE to it.type,
+                KEY_EXCEPTION_CAUSE to it.cause,
+                KEY_EXCEPTION_MESSAGE to it.message,
+                KEY_EXCEPTION_STACKTRACE to it.stacktrace
+            )
+        }
+
+        if (serviceMessenger != null) {
+            serviceMessenger.send(
+                Message().apply {
+                    data = exceptionData
+                }
+            )
+        } else {
+            // Service has not started yet. Wait a second
+            Thread.sleep(1000)
+
+            val parcel = Parcel.obtain()
+            val bundleBytes = try {
+                exceptionData.writeToParcel(parcel, 0)
+                parcel.marshall()
+            } finally {
+                parcel.recycle()
             }
-        )
+
+            WhatTheStackService.getStartupCrashFile(context).writeBytes(bundleBytes)
+        }
 
         defaultHandler?.uncaughtException(t, e)
     }
