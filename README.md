@@ -30,6 +30,14 @@ dependencies {
 }
 ```
 
+Optionally, also add a notification permission to your app. This will allow WhatTheStack to display
+clickable notifications for crashes that occur very early in the app's startup:
+
+```xml
+    <!-- Required for WhatTheStack -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+```
+
 Now when an uncaught exception is thrown in your application, you will be greeted with a screen containing information about the crash. We support light and dark themes too!
 
 <img src="media/screenshot-dark.png" width="360px" height="640px"/>
