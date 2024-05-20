@@ -7,6 +7,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.*
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.getSystemService
 import androidx.lifecycle.LifecycleService
@@ -76,17 +77,35 @@ class WhatTheStackService : LifecycleService() {
     private fun showCrashNotification(crashBundle: Bundle) {
         val notificationManager = getSystemService<NotificationManager>()!!
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
+            !notificationManager.areNotificationsEnabled()) {
+            Log.w(
+                "WhatTheStack",
+                "Cannot post crash notifications: App does not have a notification permission"
+            )
+            return
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager.createNotificationChannel(
                 NotificationChannel(
-                    "CHANNEL_CRASHES",
+                    CHANNEL_ID_CRASHES,
                     "Crashes",
                     NotificationManager.IMPORTANCE_HIGH
                 )
             )
+
+            val channel = notificationManager.getNotificationChannel(CHANNEL_ID_CRASHES)
+            if (channel.importance == NotificationManager.IMPORTANCE_NONE) {
+                Log.w(
+                    "WhatTheStack",
+                    "Cannot post crash notifications: 'Crash' notification channel is disabled"
+                )
+                return
+            }
         }
 
-        val notification = NotificationCompat.Builder(this@WhatTheStackService, "CHANNEL_CRASHES")
+        val notification = NotificationCompat.Builder(this@WhatTheStackService, CHANNEL_ID_CRASHES)
             .setContentTitle("App crashed")
             .setContentText("Tap to see more info")
             .setSmallIcon(R.drawable.ic_baseline_bug_report_24)
@@ -173,3 +192,5 @@ private fun Context.createActivityIntent(data: Bundle): Intent {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NEW_DOCUMENT
         }
 }
+
+private const val CHANNEL_ID_CRASHES = "CHANNEL_CRASHES"
