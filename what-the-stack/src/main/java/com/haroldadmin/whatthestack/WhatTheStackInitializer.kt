@@ -27,21 +27,27 @@ class WhatTheStackInitializer : Initializer<WhatTheStackInitializer.InitializedT
      * a sensible value here so we return a dummy object [InitializedToken] instead.
      */
     override fun create(context: Context): InitializedToken {
+        val messengerHolder = MessengerHolder(null)
+
+        val defaultExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
+        val customExceptionHandler = WhatTheStackExceptionHandler(
+            context,
+            messengerHolder,
+            defaultExceptionHandler
+        )
+        Thread.setDefaultUncaughtExceptionHandler(customExceptionHandler)
+
+
         val connection = object : ServiceConnection {
             override fun onServiceConnected(name: ComponentName?, service: IBinder) {
-                val messenger = Messenger(service)
-                val defaultExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
-                val customExceptionHandler = WhatTheStackExceptionHandler(
-                    messenger,
-                    defaultExceptionHandler
-                )
-                Thread.setDefaultUncaughtExceptionHandler(customExceptionHandler)
+                messengerHolder.serviceMessenger = Messenger(service)
             }
 
             override fun onServiceDisconnected(name: ComponentName?) = Unit
         }
 
         val intent = Intent(context, WhatTheStackService::class.java)
+        context.startService(intent) // Start service so that it outlives our app in case of a startup crash
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE)
 
         return InitializedToken
@@ -55,3 +61,5 @@ class WhatTheStackInitializer : Initializer<WhatTheStackInitializer.InitializedT
      */
     object InitializedToken
 }
+
+class MessengerHolder(var serviceMessenger: Messenger?)

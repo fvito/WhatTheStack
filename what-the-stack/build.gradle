@@ -49,6 +49,7 @@ dependencies {
 
     implementation libs.kotlinStdLib
     implementation libs.appCompat
+    implementation libs.lifecycleService
     implementation libs.coreKtx
     implementation libs.startup
 

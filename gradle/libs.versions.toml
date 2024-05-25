@@ -8,6 +8,7 @@ coreKtx = "1.3.2"
 materialComponents = "1.4.0"
 fragment = "1.3.5"
 constraintLayout = "2.0.4"
+lifecycleService =  "2.5.1"
 insetter = "0.6.0"
 junit = "4.12"
 androidxTestCore = "1.2.0"
@@ -41,6 +42,7 @@ coreKtx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 materialComponents = { module = "com.google.android.material:material", version.ref = "materialComponents" }
 constraintLayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintLayout" }
 fragmentKtx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragment" }
+lifecycleService = { module = "androidx.lifecycle:lifecycle-service", version.ref = "lifecycleService" }
 startup = { module = "androidx.startup:startup-runtime", version.ref = "startup" }
 insetter = { module = "dev.chrisbanes.insetter:insetter", version.ref = "insetter" }
 junit = { module = "junit:junit", version.ref = "junit" }
