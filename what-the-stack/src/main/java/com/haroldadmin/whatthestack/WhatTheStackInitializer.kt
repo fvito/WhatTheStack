@@ -62,4 +62,4 @@ internal class WhatTheStackInitializer : Initializer<WhatTheStackInitializer.Ini
     internal object InitializedToken
 }
 
-class MessengerHolder(var serviceMessenger: Messenger?)
+internal class MessengerHolder(var serviceMessenger: Messenger?)
