@@ -13,7 +13,7 @@ import java.lang.Class
  * WhatTheStackInitializer is an [androidx.startup.Initializer] for WhatTheStack
  */
 @HostAppProcess
-class WhatTheStackInitializer : Initializer<WhatTheStackInitializer.InitializedToken> {
+internal class WhatTheStackInitializer : Initializer<WhatTheStackInitializer.InitializedToken> {
 
     /**
      * Runs in the host app's process to:
@@ -59,7 +59,7 @@ class WhatTheStackInitializer : Initializer<WhatTheStackInitializer.InitializedT
      * A dummy object that does nothing but represent a type that can be returned by
      * [WhatTheStackInitializer]
      */
-    object InitializedToken
+    internal object InitializedToken
 }
 
-class MessengerHolder(var serviceMessenger: Messenger?)
+internal class MessengerHolder(var serviceMessenger: Messenger?)

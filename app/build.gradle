@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 android {
     compileSdkVersion buildConfig.compileSdk
 
+    namespace "com.haroldadmin.crashyapp"
+
     defaultConfig {
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
@@ -11,7 +13,6 @@ android {
         versionName buildConfig.versionName
         applicationId buildConfig.applicationId
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles 'consumer-rules.pro'
     }
 
     signingConfigs {
@@ -61,8 +62,6 @@ dependencies {
     implementation libs.composeActivity
     implementation libs.composeMaterial
     implementation libs.composeTooling
-    implementation libs.accompanistSysUi
-    implementation libs.accompanistInsets
 
     testImplementation libs.junit
 

@@ -33,7 +33,7 @@ import java.lang.ref.WeakReference
  * exception data as an intent extra.
  */
 @ServiceProcess
-class WhatTheStackService : LifecycleService() {
+internal class WhatTheStackService : LifecycleService() {
     private var finishedWaitingForFile = false
     private var stopAfterWaitingForFile = false
 
@@ -124,7 +124,6 @@ class WhatTheStackService : LifecycleService() {
 
         notificationManager.notify(2373489, notification)
     }
-
     /**
      * [Handler] that runs on the main thread to handle incoming processed uncaught
      * exceptions from [WhatTheStackExceptionHandler]

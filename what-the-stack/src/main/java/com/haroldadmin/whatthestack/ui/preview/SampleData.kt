@@ -1,11 +1,11 @@
 package com.haroldadmin.whatthestack.ui.preview
 
-object SampleData {
-    const val ExceptionType = "Runtime Exception"
+internal object SampleData {
+    internal const val ExceptionType = "Runtime Exception"
 
-    const val ExceptionMessage = "This exception was thrown purely because it can be thrown"
+    internal const val ExceptionMessage = "This exception was thrown purely because it can be thrown"
 
-    const val Stacktrace =
+    internal const val Stacktrace =
         """java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
 	at com.android.internal.os.RuntimeInitMethodAndArgsCaller.run(RuntimeInit.java:558)
 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1003)

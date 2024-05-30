@@ -7,7 +7,9 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
@@ -23,8 +25,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.accompanist.insets.navigationBarsHeight
-import com.google.accompanist.insets.statusBarsHeight
 import com.haroldadmin.whatthestack.R
 import com.haroldadmin.whatthestack.generateStackoverflowSearchUrl
 import com.haroldadmin.whatthestack.ui.components.OutlinedIconButton
@@ -34,7 +34,7 @@ import com.haroldadmin.whatthestack.ui.theme.WhatTheStackTheme
 import kotlinx.coroutines.launch
 
 @Composable
-fun ExceptionPage(
+internal fun ExceptionPage(
     type: String,
     message: String,
     stackTrace: String
@@ -46,13 +46,18 @@ fun ExceptionPage(
 
     val snackbarMessage = stringResource(id = R.string.copied_message)
 
-    Scaffold(scaffoldState = scaffoldState) {
+    Scaffold(
+        scaffoldState = scaffoldState,
+        modifier = Modifier
+            .statusBarsPadding()
+            .navigationBarsPadding()
+            .padding(horizontal = 4.dp)
+    ) {
         Column(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(it)
                 .verticalScroll(rememberScrollState())
         ) {
-            Spacer(modifier = Modifier.statusBarsHeight(additional = 8.dp))
             PageHeader()
             ExceptionDetails(
                 type = type,
@@ -102,13 +107,12 @@ fun ExceptionPage(
                 stackTrace = stackTrace,
                 modifier = Modifier.padding(top = 8.dp)
             )
-            Spacer(modifier = Modifier.navigationBarsHeight(additional = 8.dp))
         }
     }
 }
 
 @Composable
-fun PageHeader() {
+private fun PageHeader() {
     Text(
         stringResource(id = R.string.header_text),
         style = MaterialTheme.typography.h4,
@@ -123,7 +127,7 @@ fun PageHeader() {
 }
 
 @Composable
-fun ExceptionDetails(type: String, message: String, modifier: Modifier) {
+private fun ExceptionDetails(type: String, message: String, modifier: Modifier) {
     Column(modifier = modifier) {
         OverlineLabel(label = stringResource(id = R.string.exception_name))
         Text(
@@ -142,7 +146,7 @@ fun ExceptionDetails(type: String, message: String, modifier: Modifier) {
 }
 
 @Composable
-fun ExceptionOptions(
+private fun ExceptionOptions(
     onCopy: () -> Unit,
     onShare: () -> Unit,
     onRestart: () -> Unit,
@@ -181,7 +185,7 @@ fun ExceptionOptions(
 }
 
 @Composable
-fun Stacktrace(stackTrace: String, modifier: Modifier) {
+private fun Stacktrace(stackTrace: String, modifier: Modifier) {
     Column(modifier) {
         OverlineLabel(label = stringResource(id = R.string.stacktrace))
         Surface(modifier = Modifier.padding(top = 4.dp)) {
@@ -202,7 +206,7 @@ fun Stacktrace(stackTrace: String, modifier: Modifier) {
 
 @Preview
 @Composable
-fun ExceptionPagePreview() {
+private fun ExceptionPagePreview() {
     WhatTheStackTheme {
         ExceptionPage(
             type = SampleData.ExceptionType,
@@ -214,7 +218,7 @@ fun ExceptionPagePreview() {
 
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
-fun ExceptionPagePreviewNightMode() {
+private fun ExceptionPagePreviewNightMode() {
     WhatTheStackTheme {
         ExceptionPage(
             type = SampleData.ExceptionType,
