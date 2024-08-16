@@ -1,13 +1,14 @@
 package com.haroldadmin.whatthestack
 
+import android.app.ActivityManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import android.os.Messenger
+import androidx.core.content.getSystemService
 import androidx.startup.Initializer
-import java.lang.Class
 
 /**
  * WhatTheStackInitializer is an [androidx.startup.Initializer] for WhatTheStack
@@ -37,7 +38,6 @@ internal class WhatTheStackInitializer : Initializer<WhatTheStackInitializer.Ini
         )
         Thread.setDefaultUncaughtExceptionHandler(customExceptionHandler)
 
-
         val connection = object : ServiceConnection {
             override fun onServiceConnected(name: ComponentName?, service: IBinder) {
                 messengerHolder.serviceMessenger = Messenger(service)
@@ -47,7 +47,19 @@ internal class WhatTheStackInitializer : Initializer<WhatTheStackInitializer.Ini
         }
 
         val intent = Intent(context, WhatTheStackService::class.java)
-        context.startService(intent) // Start service so that it outlives our app in case of a startup crash
+        val importance = context.getSystemService<ActivityManager>()
+            ?.runningAppProcesses
+            ?.firstOrNull { it.pkgList.contains(context.packageName) }
+            ?.importance
+
+        if (importance != null &&
+            importance <= ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
+        ) {
+            // Start service so that it outlives our app in case of a startup crash
+            // Only start if our app is considered to be in the foreground,
+            // otherwise Android will crash us
+            context.startService(intent)
+        }
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE)
 
         return InitializedToken
