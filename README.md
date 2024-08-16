@@ -10,7 +10,7 @@ It shows you a pretty error screen when your Android App crashes, instead of a b
 
 ## Setup
 
-[![Release](https://jitpack.io/v/haroldadmin/WhatTheStack.svg)](https://jitpack.io/#haroldadmin/WhatTheStack)
+[![Release](https://jitpack.io/v/fvito/WhatTheStack.svg)](https://jitpack.io/#fvito/WhatTheStack)
 
 Add Jitpack repository in your root `build.gradle` file:
 
